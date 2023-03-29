@@ -1,0 +1,81 @@
+2379. Minimum Recolors to Get K Consecutive Black Blocks
+Easy
+491
+13
+Companies
+You are given a 0-indexed string blocks of length n, where blocks[i] is either 'W' or 'B', representing the color of the ith block. The characters 'W' and 'B' denote the colors white and black, respectively.
+
+You are also given an integer k, which is the desired number of consecutive black blocks.
+
+In one operation, you can recolor a white block such that it becomes a black block.
+
+Return the minimum number of operations needed such that there is at least one occurrence of k consecutive black blocks.
+
+ 
+
+Example 1:
+
+Input: blocks = "WBBWWBBWBW", k = 7
+Output: 3
+Explanation:
+One way to achieve 7 consecutive black blocks is to recolor the 0th, 3rd, and 4th blocks
+so that blocks = "BBBBBBBWBW". 
+It can be shown that there is no way to achieve 7 consecutive black blocks in less than 3 operations.
+Therefore, we return 3.
+Example 2:
+
+Input: blocks = "WBWBBBW", k = 2
+Output: 0
+Explanation:
+No changes need to be made, since 2 consecutive black blocks already exist.
+Therefore, we return 0.
+ 
+
+Constraints:
+
+n == blocks.length
+1 <= n <= 100
+blocks[i] is either 'W' or 'B'.
+1 <= k <= n
+Accepted
+31.9K
+Submissions
+55.3K
+Acceptance Rate
+57.8%
+
+
+
+
+
+class Solution {
+public:
+    int minimumRecolors(string blocks, int k) {
+        int n = blocks.size();
+        int res = 1e9;
+        vector<int> pf;
+
+        int bc = 0;
+        for(auto i : blocks)    {
+            if(i=='B')  
+                bc++;
+            pf.push_back(bc);
+        }
+        
+
+        for(int i=0; i+k-1<n; i++)   {
+            int l = i;
+            int h = i+k-1;
+            int curr_val;
+
+            if(l-1>=0)
+                curr_val = ((h+1)-l) - (pf[h]-pf[l-1]);
+            else 
+                curr_val = ((h+1)-l) - (pf[h]);
+
+            res = min(res,curr_val);
+        }
+
+        return res;       
+    }
+};
