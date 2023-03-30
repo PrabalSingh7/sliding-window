@@ -1,0 +1,60 @@
+1343. Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold
+Medium
+1.1K
+79
+Companies
+Given an array of integers arr and two integers k and threshold, return the number of sub-arrays of size k and average greater than or equal to threshold.
+
+ 
+
+Example 1:
+
+Input: arr = [2,2,2,2,5,5,5,8], k = 3, threshold = 4
+Output: 3
+Explanation: Sub-arrays [2,5,5],[5,5,5] and [5,5,8] have averages 4, 5 and 6 respectively. All other sub-arrays of size 3 have averages less than 4 (the threshold).
+Example 2:
+
+Input: arr = [11,13,17,23,29,31,7,5,2,3], k = 3, threshold = 5
+Output: 6
+Explanation: The first 6 sub-arrays of size 3 have averages greater than 5. Note that averages are not integers.
+ 
+
+Constraints:
+
+1 <= arr.length <= 105
+1 <= arr[i] <= 104
+1 <= k <= arr.length
+0 <= threshold <= 104
+Accepted
+54.4K
+Submissions
+80.4K
+Acceptance Rate
+67.6%
+
+
+
+
+class Solution {
+public:
+    int numOfSubarrays(vector<int>& arr, int k, int threshold) {
+        int n = arr.size(), s = 0, res = 0;
+        vector<int> prefixSum;
+
+        for(auto i : arr)   {
+            s += i;
+            prefixSum.push_back(s);
+        }
+
+        for(int i=-1; i+k<n; i++)   {
+            int l,h;
+            if(i==-1)   l = 0;
+            else l = prefixSum[i];
+            h = prefixSum[i+k];
+            int curr = (h-l)/k;
+            if(curr>=threshold) res++;
+        }
+
+        return res;
+    }
+};
