@@ -1,0 +1,65 @@
+2405. Optimal Partition of String
+Medium
+648
+33
+Companies
+Given a string s, partition the string into one or more substrings such that the characters in each substring are unique. That is, no letter appears in a single substring more than once.
+
+Return the minimum number of substrings in such a partition.
+
+Note that each character should belong to exactly one substring in a partition.
+
+ 
+
+Example 1:
+
+Input: s = "abacaba"
+Output: 4
+Explanation:
+Two possible partitions are ("a","ba","cab","a") and ("ab","a","ca","ba").
+It can be shown that 4 is the minimum number of substrings needed.
+Example 2:
+
+Input: s = "ssssss"
+Output: 6
+Explanation:
+The only valid partition is ("s","s","s","s","s","s").
+ 
+
+Constraints:
+
+1 <= s.length <= 105
+s consists of only English lowercase letters.
+Accepted
+41.4K
+Submissions
+54K
+Acceptance Rate
+76.7%
+
+
+
+class Solution {
+public:
+    int partitionString(string s) {
+        int n = s.size(), res = 1;
+        vector<int> count (26,0);
+        int l=0,h=0;
+
+        while(h<n)  {
+            count[s[h]-'a']++;
+
+            if(count[s[h]-'a']>1)   {
+                res++;
+                while(l<h) {
+                    count[s[l]-'a']--;
+                    l++;
+                }
+            }
+
+            h++;
+        }
+
+        return res;
+    }
+};
