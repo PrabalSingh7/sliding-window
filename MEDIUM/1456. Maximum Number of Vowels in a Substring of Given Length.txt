@@ -1,0 +1,73 @@
+1456. Maximum Number of Vowels in a Substring of Given Length
+Medium
+1.1K
+50
+Companies
+Given a string s and an integer k, return the maximum number of vowel letters in any substring of s with length k.
+
+Vowel letters in English are 'a', 'e', 'i', 'o', and 'u'.
+
+ 
+
+Example 1:
+
+Input: s = "abciiidef", k = 3
+Output: 3
+Explanation: The substring "iii" contains 3 vowel letters.
+Example 2:
+
+Input: s = "aeiou", k = 2
+Output: 2
+Explanation: Any substring of length 2 contains 2 vowels.
+Example 3:
+
+Input: s = "leetcode", k = 3
+Output: 2
+Explanation: "lee", "eet" and "ode" contain 2 vowels.
+ 
+
+Constraints:
+
+1 <= s.length <= 105
+s consists of lowercase English letters.
+1 <= k <= s.length
+Accepted
+58.1K
+Submissions
+99.8K
+Acceptance Rate
+58.2%
+
+
+
+class Solution {
+public:
+    int maxVowels(string s, int k) {
+        int n = s.size();
+        vector<int> pf;
+        int cnt=0;
+
+        for(auto  i : s)    {
+            if(i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u'){
+                cnt++;
+            }
+            pf.push_back(cnt);
+        }
+
+        int res = 0;
+        for(int j=k-1; j<n; j++)   {
+            int i = j-k;
+            int low = 0, high = pf[j];
+
+            if(i>-1)    {
+                low = pf[i];
+            }
+
+            int curr = high - low;
+            // cout<<i<<" "<<j<<" "<<low<<" "<<high<<" "<<curr<<"\n";
+            res = max(res,curr);
+        }
+
+        return res;
+    }
+};
