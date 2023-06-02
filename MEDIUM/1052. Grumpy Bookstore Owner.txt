@@ -1,0 +1,78 @@
+1052. Grumpy Bookstore Owner
+Medium
+1.5K
+123
+There is a bookstore owner that has a store open for n minutes. Every minute, some number of customers enter the store. You are given an integer array customers of length n where customers[i] is the number of the customer that enters the store at the start of the ith minute and all those customers leave after the end of that minute.
+
+On some minutes, the bookstore owner is grumpy. You are given a binary array grumpy where grumpy[i] is 1 if the bookstore owner is grumpy during the ith minute, and is 0 otherwise.
+
+When the bookstore owner is grumpy, the customers of that minute are not satisfied, otherwise, they are satisfied.
+
+The bookstore owner knows a secret technique to keep themselves not grumpy for minutes consecutive minutes, but can only use it once.
+
+Return the maximum number of customers that can be satisfied throughout the day.
+
+ 
+
+Example 1:
+
+Input: customers = [1,0,1,2,1,1,7,5], grumpy = [0,1,0,1,0,1,0,1], minutes = 3
+Output: 16
+Explanation: The bookstore owner keeps themselves not grumpy for the last 3 minutes. 
+The maximum number of customers that can be satisfied = 1 + 1 + 1 + 1 + 7 + 5 = 16.
+Example 2:
+
+Input: customers = [1], grumpy = [0], minutes = 1
+Output: 1
+ 
+
+Constraints:
+
+n == customers.length == grumpy.length
+1 <= minutes <= n <= 2 * 104
+0 <= customers[i] <= 1000
+grumpy[i] is either 0 or 1.
+63.8K
+111.6K
+57.1%
+
+
+
+class Solution {
+public:
+    int maxSatisfied(vector<int>& cust, vector<int>& grumpy, int mins) {
+        int n = cust.size();
+        int res = -1;
+        
+        int s = 0;
+        vector<int> prefix;
+        for(int i=0; i<n; i++)  {  
+            s += grumpy[i]==0 ? cust[i] : 0;
+            prefix.push_back(s);
+        }
+        s = 0;
+        vector<int> suffix;
+        for(int i=n-1; i>=0; i--)  {  
+            s += grumpy[i]==0 ? cust[i] : 0;
+            suffix.push_back(s);
+        }reverse(suffix.begin(),suffix.end());
+        
+        vector<int> window;
+        int w = 0;
+        int i = 0;
+        for(int j=0; j<n; j++)  {
+            w += cust[j];
+            if(j-i >= mins) {
+                w -= cust[i];
+                i++;
+            }
+            int l = (i-1>=0) ? prefix[i-1] : 0;
+            int r = (j+1<n) ? suffix[j+1] : 0;
+
+            res = max(res,(l+r+w));
+            window.push_back(w);
+        }
+
+        return res;
+    }
+};
